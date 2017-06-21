@@ -1,0 +1,17 @@
+
+@import url(https://fonts.googleapis.com/css?family=Francois+One);
+@import url(https://fonts.googleapis.com/css?family=Overpass:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,700,400italic);
+
+body {
+    font-family: 'Overpass';
+}
+h1, h2, h3 {
+    font-family: 'Francois One';
+    margin: 0px;
+}
+.remark-code, .remark-inline-code {
+    font-family: 'Roboto Mono'; font-size: 18px;
+}
+.remark-slide-content li {margin: 6px;}
+.remark-slide-content ul {padding-left: 20px;}
