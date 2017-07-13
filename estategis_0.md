@@ -15,7 +15,7 @@
 
 * conoscenza dei sistemi informativi geografici 
 * conoscenza delle principali funzioni di geoprocessing
-* conoscenza di QGIS 2.18
+* conoscenza di QGIS 2.14
 
 ## DATASET di esempio
 [dataset](./dataset.zip)
@@ -36,17 +36,11 @@ Il codice Python può essere usato in diversi contesti:
 
 ---
 
-#### Master di II livello in "GIScience e sistemi a pilotaggio remoto per la gestione integrata del territorio e dellerisorse naturali"
-#### eSTATE gis 2017
-#### Workshop "Geoprocessing in python con QGIS"
+## Python nella console (righa di comando o script)
 
-#### (C) 2017 Enrico Ferreguti
-#### I contenuti sono distribuiti con licenza [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/it/) ![](CC-BY-SA_icon.svg.png)
-
+## CONTENUTI DEL WORKSHOP
 
 * [sezione 1 - introduzione](./workshop_0.html)
-* [sezione 2 - estendere QGIS](./estategis_1.html)
-* [sezione 3 - il linguaggio Python](./workshop_1.html)
-* [sezione 4 - PyQt / PyQGIS](./workshop_2.html)
-* [sezione 5 - PyQGIS per esempi](./estategis_2.html)
-* [sezione 5 - ESERCITAZIONE](./estategis_3.html)
+* [sezione 2 - il linguaggio Python](./workshop_1.html)
+* [sezione 3 - PyQt / PyQGIS](./workshop_2.html)
+* [sezione 4 - PyQGIS per esempi](./workshop_3.html)

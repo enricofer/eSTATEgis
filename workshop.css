@@ -15,3 +15,7 @@ h1, h2, h3 {
 }
 .remark-slide-content li {margin: 6px;}
 .remark-slide-content ul {padding-left: 20px;}
+
+.fillimage {
+    width:50%;
+}

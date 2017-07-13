@@ -12,53 +12,44 @@
 	* Dai Modelli agli script di Processing
 	* Uno script per preparare un grafo per il routing
 
-----
+---
 
-### Script di console
+## struttura di un plugin
 
-![console](./console_completa.png)
-
-----
-### giochiamo con python
-
-```python
-a = 10
-b = 'ciao'
-c = a
-print (c)
-
-if a == 10:
-    print "VERO!"
-else:
-    print "FALSO!"
-
-for j in range(0,a):
-    print (j)
-    
-for c in b:
-    print (c)
 ```
+PYTHON_PLUGINS_PATH/MIO PLUGIN/
+        __init__.py    --> richiesto, punto di partenza del plugin
+        mainPlugin.py  --> richiesto, caricato dal metodo classFactory()
+        metadata.txt   --> richiesto, contiene info per il repository
+        resources.qrc  --> utile/facoltativo contiene immagini e altro
+        resources.py   --> versione compilata con pyrcc4
+        form.ui        --> utile/facoltativo, definizione della GUI
+        form.py        --> versione compilata con pyuic4
+``` 
 
-----
+---
+
+#### plugin builder
+![plugin buider](./pluginBuilder.png)
+
+E' uno strumento per la compilazione automatica dei files basilari per la realizzazione di un plugin lasciando all'utente la definizione del funzionamento in dettaglio e la definizione dell'interfaccia
+
+---
+
+#### disegnare la GUI con qt_designer
+<img src="qt_designer.png" width="100%" />
+E' uno strumento che permette di creare e modificare l'interfaccia di dialogo con l'utente in modo semplice ed intuitivo
+
+---
+
+#### risorse per la programmazione di un plugin:
+* [un plugin minimale] (https://github.com/wonder-sk/qgis-minimal-plugin)
+* [un plugin costruito con plugin builder - autosaver] (https://github.com/enricofer/autoSaver)
+* [pyqgis cookbook] (http://docs.qgis.org/testing/en/docs/pyqgis_developer_cookbook/)
+* [API di QGIS 2.14LTR](http://qgis.org/api/2.14/)
+* [API di Qt4](http://doc.qt.io/qt-4.8/modules.html)
 
 
-### l'oggetto [iface](http://qgis.org/api/2.14/classQgisInterface.html)
-```python
-iface
-```
-```python
-dir(iface)
-```
-```python
-iface.actionNewProject()
-```
-```python
-iface.mapCanvas()
-iface.mapCanvas().extent().asPolygon()
-```
-```python
-a = QgsVectorLayer("path","nome","provider")
-```
 ---
 
 #### Cambia la trasparenza del layer corrente
@@ -209,6 +200,7 @@ def isSelected(value1,feature, parent):
 ```
 
 ---
+
 ## Processing
 In QGIS è contenuta un'interfaccia molto sofisticata per il geoprocessing che consente l'uso di algoritmi nativi e algoritmi esterni per il processamento di dati a contenuto geo spaziale. Tale libreria si chiama Processing. 
 Gli algoritmi di processing prevedono una maschera di input con una serie di dati obbligatori o opzionali e l'indicazione dei layer di output dei risultati.
@@ -244,6 +236,7 @@ Gli utenti possono facilmente aggiungere uno script di processing in python per 
 ---
 #### Struttura dello script di processing
 Analizziamo uno script di esempio per la generazione di un grafo e nodi per l'analisi dei persorsi
+[codice](./python/processing/costruisci_grafo.py)
 ```python
 ##Linee=vector line
 ##nodi=output vector
@@ -252,13 +245,15 @@ Analizziamo uno script di esempio per la generazione di un grafo e nodi per l'an
 Uno script di processing inizia con la dichiarazione della maschera di interfaccia. 
 
 ---
+
+importazione delle classi utilizzate
+
 ```python
 from qgis.core import QgsGeometry, QgsField, QgsFeature, QGis 
 from PyQt4.QtCore import QVariant
 from processing.tools.vector import VectorWriter
 ```
-importazione delle classi utilizzate
-
+preparazione dei dati di default
 ```python
 linee_layer = processing.getObject(Linee)
 grafo_fields = [QgsField("rif_id", QVariant.Int), QgsField("in_id", QVariant.Int), QgsField("out_id", QVariant.Int)]
@@ -266,24 +261,48 @@ grafo_writer = VectorWriter(grafo, None, grafo_fields, QGis.WKBMultiLineString, 
 nodi_fields = [QgsField("nodo_id", QVariant.Int)]
 nodi_writer = VectorWriter(nodi, None, nodi_fields, QGis.WKBMultiPoint, linee_layer.crs())
 ```
-preparazione dei dati di default
 
 ---
-```python
-from qgis.core import QgsGeometry, QgsField, QgsFeature, QGis 
-from PyQt4.QtCore import QVariant
-from processing.tools.vector import VectorWriter
-```
-importazione delle classi utilizzate
 
+Individuazione dei vertici degli archi del grafo
 ```python
-linee_layer = processing.getObject(Linee)
-grafo_fields = [QgsField("rif_id", QVariant.Int), QgsField("in_id", QVariant.Int), QgsField("out_id", QVariant.Int)]
-grafo_writer = VectorWriter(grafo, None, grafo_fields, QGis.WKBMultiLineString, linee_layer.crs())
-nodi_fields = [QgsField("nodo_id", QVariant.Int)]
-nodi_writer = VectorWriter(nodi, None, nodi_fields, QGis.WKBMultiPoint, linee_layer.crs())
+i = 0
+n = linee_layer.featureCount()
+lista_nodi = []
+progress.setText("Individuazione dei vertici degli archi del grafo ...")
+for k,feature in enumerate(processing.features(linee_layer)):
+    progress.setPercentage(int(100*i/n))
+    i += 1
+    lista_vertici = feature.geometry().asPolyline()
+    grafo_feature = QgsFeature()
+    attributi =[feature.id()]
+    grafo_feature.setGeometry(feature.geometry())
+    for campo, estremo in ({1:lista_vertici[0],2:lista_vertici[-1]}).items():
+        id_nodo = aggiungi_nodo(estremo)
+        attributi.append(id_nodo)
+    grafo_feature.setAttributes(attributi)
+    grafo_writer.addFeature(grafo_feature)
 ```
-preparazione dei dati di default
+
+---
+
+
+Creazione dei nodi e chiusura dello script
+```python
+i = 0
+n = len(lista_nodi)
+progress.setText("Creazione dei nodi ...")
+
+for i, nodo in enumerate(lista_nodi):
+    progress.setPercentage(int(100*i/n))
+    nodo_feature = QgsFeature()
+    nodo_feature.setAttributes([i])
+    nodo_feature.setGeometry(QgsGeometry.fromPoint(nodo))
+    nodi_writer.addFeature(nodo_feature)
+
+del nodi_writer
+del grafo_writer
+```
 
 ---
 
@@ -294,10 +313,9 @@ preparazione dei dati di default
 #### (C) 2017 Enrico Ferreguti
 #### I contenuti sono distribuiti con licenza [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/it/) ![](CC-BY-SA_icon.svg.png)
 
-
 * [sezione 1 - introduzione](./workshop_0.html)
-* [sezione 2 - estendere QGIS](./estategis_2.html)
+* [sezione 2 - estendere QGIS](./estategis_1.html)
 * [sezione 3 - il linguaggio Python](./workshop_1.html)
 * [sezione 4 - PyQt / PyQGIS](./workshop_2.html)
-* [sezione 5 - PyQGIS per esempi](./workshop_3.html)
+* [sezione 5 - PyQGIS per esempi](./estategis_2.html)
 * [sezione 5 - ESERCITAZIONE](./estategis_3.html)
