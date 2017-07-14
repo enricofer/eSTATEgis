@@ -17,8 +17,8 @@ Settaggio di repositories alternativi:
 ---
 
 ## Alcuni plugins significativi
-* [Photo2Shape]()
-* [openlayers]() [quickmapservices]() XYZprovider 
+* [Photo2Shape](http://plugins.qgis.org/plugins/photo2shape/)
+* [openlayers](http://plugins.qgis.org/plugins/openlayers_plugin/) [quickmapservices](http://plugins.qgis.org/plugins/quick_map_services/) XYZprovider
 * [ArcGIS REST API Connector](http://plugins.qgis.org/plugins/connector/)
 * [Qgis2threejs](https://github.com/minorua/Qgis2threejs)
 * [CXFin](http://plugins.qgis.org/plugins/Cxf_in/)
@@ -30,7 +30,7 @@ Settaggio di repositories alternativi:
 
 ---
 
-## Home made plugins 
+## Home made plugins
 (http://plugins.qgis.org/plugins/user/enricofer/)
 
 * go2streetview
@@ -56,7 +56,7 @@ Settaggio di repositories alternativi:
 [HOME_DIR]/.qgis2/python/plugins - [HOME_DIR] varia a seconda dei sistemi operativi. Possono essere scaricati da (https://github.com/)
 * I plugin di qgis devono avere una licenza compatibile con la [GPL V2](http://blog.qgis.org/2016/05/29/licensing-requirements-for-qgis-plugins/)
 * risorse in italiano: [pigrecoinfinito](https://pigrecoinfinito.wordpress.com/)
-    
+
 ---
 
 ## struttura di un plugin
@@ -70,7 +70,7 @@ PYTHON_PLUGINS_PATH/MIO PLUGIN/
         resources.py   --> versione compilata con pyrcc4
         form.ui        --> utile/facoltativo, definizione della GUI
         form.py        --> versione compilata con pyuic4
-``` 
+```
 ---
 
 #### plugin builder
@@ -116,7 +116,7 @@ else:
 
 for j in range(0,a):
     print (j)
-    
+
 for c in b:
     print (c)
 ```

@@ -37,12 +37,12 @@ consente di interagire con QGIS usando Python
 25.45	#float (numero decimale)
 
 # Per trasformare una stringa in numero
-# o troncare un float 
+# o troncare un float
 int("10")
 int(34.354)
 
 # L'aritmetica ha una notazione convenzionale
-10 + 1 
+10 + 1
 10 * 5
 10*(45/3)+8*17
 
@@ -165,7 +165,7 @@ d = {
     "chiave2": 234.56,
     "chiave2": "contenuto",
     "chiave3": {
-    	"chiave3_1": "abcdef",
+        "chiave3_1": "abcdef",
         "chiave3_2": "xyz"
     }
 }
@@ -213,7 +213,7 @@ print zone_letter
 * l'indentazione è il sistema con cui Python raggruppa le istruzioni
 * L'indentazione viene realizzata con spazi o tabulazioni
 * ogni riga all'interno di un blocco base dev'essere indentata in ugual misura
-* Usare un buon editor di testo per programmatori! 
+* Usare un buon editor di testo per programmatori!
 ---
 
 ## Cicli
@@ -245,7 +245,7 @@ def ZonaUtm(longitudine, latitudine):
     else:
         lettera_zona = 'S'
     return '%d%s' % (int(numero_zona), lettera_zona)
-    
+
 # Uso della funzione
 ZonaUtm(11.55,45)   # 32
 ```
@@ -262,7 +262,7 @@ path.join(r'C:\Users', 'Matt')
 ```
 l'organizzazione modulare è una delle caratteristiche del linguaggio. I moduli possono essere:
 * predefiniti, già compresi nella dotazione di base del linguaggio
-* esterni, contenuti nei path di sistema di Python (PATH, PYTHONPATH). Possono essere preimportati o importati da internet tramite pip/setuptools 
+* esterni, contenuti nei path di sistema di Python (PATH, PYTHONPATH). Possono essere preimportati o importati da internet tramite pip/setuptools
 * definiti dall'utente in sottocartelle
 
 ---
@@ -285,28 +285,28 @@ l'organizzazione modulare è una delle caratteristiche del linguaggio. I moduli 
 # Classi in Python
 ```python
 class rettangolo:
-   
+
    def __init__(self, l, h):
       self.l = l
       self.h = h
-   
+
    def area(self)
-      return l*h
-   
+      return self.l*self.h
+
    def perimetro(self)
-      return(l+h)*2
-   
+      return(self.l+self.h)*2
+
    def scala(self, scala)
-      self.l = l*scala
-      self.h = h*scala
- 
+      self.l = self.l*scala
+      self.h = self.h*scala
+
  r = rettangolo(10,5) #istanziazione di un oggetto rettangolo
  r.area()             #50
- r.scala(2)           
+ r.scala(2)
  r.perimetro()        #60
  r.l                  #20
  r.h                  #10
-```   
+```
 
 ---
 ---
@@ -315,7 +315,7 @@ QGIS è programmato in modo modulare in C++ ed espone classi e metodi di funzion
 ```python
 # iface è l'oggetto principale di QGIS da cui derivano
 # tutti gli altri oggetti che ne permettono il funzionamento
-# è un "singleton" un oggetto con unica istanza 
+# è un "singleton" un oggetto con unica istanza
 # della classe QgisInterface, istanziato come oggetto iface
 iface.activeLayer().name()
 
@@ -324,7 +324,7 @@ iface.activeLayer()
 
 # quali metodi o attributi per un'oggetto:
 dir(iface.activeLayer())
-```   
+```
 
 ---
 
